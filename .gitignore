@@ -1,0 +1,6 @@
+.env
+logs/*
+!logs/.gitkeep
+envs/*
+!envs/.gitkeep
+nginx/conf.d/*.conf
