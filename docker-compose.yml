@@ -6,21 +6,7 @@ services:
       - "80:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/conf.d:/etc/nginx/conf.d
-    networks:
-      - sandbox-control
-
-  api:
-    build:
-      context: .
-      dockerfile: platform/Dockerfile
-    container_name: sandbox-api
-    ports:
-      - "8000:8000"
-    volumes:
-      - .:/app
-      - /var/run/docker.sock:/var/run/docker.sock
-    working_dir: /app
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
     networks:
       - sandbox-control
 

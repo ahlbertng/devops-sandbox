@@ -2,7 +2,6 @@ from flask import Flask, jsonify
 import os
 
 app = Flask(__name__)
-
 ENV_ID = os.getenv("ENV_ID", "unknown")
 
 @app.route("/")
