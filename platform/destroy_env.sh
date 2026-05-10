@@ -29,6 +29,8 @@ if [[ -n "$LOGGER_PID" ]]; then
   kill "$LOGGER_PID" 2>/dev/null || true
 fi
 
+chmod -R 777 "$LOGS_DIR/$ENV_ID" 2>/dev/null || true
+
 mkdir -p "$LOGS_DIR/archived/$ENV_ID"
 
 if [[ -d "$LOGS_DIR/$ENV_ID" ]]; then

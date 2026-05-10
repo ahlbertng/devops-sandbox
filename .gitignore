@@ -4,3 +4,4 @@ logs/*
 envs/*
 !envs/.gitkeep
 nginx/conf.d/*.conf
+platform/__pycache__/

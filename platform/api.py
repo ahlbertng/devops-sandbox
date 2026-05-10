@@ -85,15 +85,11 @@ def destroy_env(env_id: str):
 
 @app.get("/envs/{env_id}/logs")
 def get_logs(env_id: str):
-    log_file = LOGS_DIR / env_id / "health.log"
-
+    log_file = LOGS_DIR / env_id / "app.log"
     if not log_file.exists():
         raise HTTPException(status_code=404, detail="logs not found")
-
-    return {
-        "env_id": env_id,
-        "logs": log_file.read_text().splitlines()
-    }
+    lines = log_file.read_text().splitlines()
+    return {"env_id": env_id, "logs": lines[-100:]}
 
 
 @app.post("/envs/{env_id}/outage")
@@ -110,3 +106,15 @@ def outage(env_id: str, payload: OutageRequest):
         "message": "outage simulated",
         "output": output
     }
+
+@app.get("/envs/{env_id}/health")
+def get_health(env_id: str):
+    state_file = ENVS_DIR / f"{env_id}.json"
+    if not state_file.exists():
+        raise HTTPException(status_code=404, detail="not found")
+    state = json.loads(state_file.read_text())
+    health_log = LOGS_DIR / env_id / "health.log"
+    if not health_log.exists():
+        return {"env_id": env_id, "status": state.get("status"), "results": []}
+    lines = health_log.read_text().strip().splitlines()
+    return {"env_id": env_id, "status": state.get("status"), "results": lines[-10:]}

@@ -190,6 +190,7 @@ make cleanup-daemon
 make monitor
 make outage ENV=env-abc123 MODE=pause
 make logs ENV=env-abc123
+make health
 make api-create
 make api-list
 make status
@@ -238,7 +239,8 @@ curl http://localhost/env-abc123/health
 ### Observe health logs
 
 ```bash
-cat logs/env-abc123/health.log
+make health
+make logs ENV=env-abc123
 ```
 
 ### Simulate outage
@@ -326,6 +328,9 @@ and writes results to:
 ```text
 logs/$ENV_ID/health.log
 ```
+After 3 consecutive failures, the monitor marks the environment status as "degraded"
+in its state file and prints a warning.
+
 
 ---
 

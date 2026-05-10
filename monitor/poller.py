@@ -9,6 +9,8 @@ ENVS_DIR = ROOT_DIR / "envs"
 LOGS_DIR = ROOT_DIR / "logs"
 
 CHECK_INTERVAL = 30
+FAILURE_THRESHOLD = 3
+failure_counts = {}
 
 print("Health monitor started")
 
@@ -28,11 +30,22 @@ while True:
             try:
                 response = urlopen(url, timeout=5)
                 status = response.status
+                failure_counts[env_id] = 0
 
                 line = f"[{timestamp}] HEALTHY status={status}"
 
             except URLError as e:
-                line = f"[{timestamp}] UNHEALTHY error={str(e)}"
+                failure_counts[env_id] = failure_counts.get(env_id, 0) + 1
+                consecutive = failure_counts[env_id]
+                line = f"[{timestamp}] UNHEALTHY error={str(e)} consecutive={consecutive}"
+                print(f"⚠ FAIL {env_id} — {consecutive} consecutive failures", flush=True)
+
+                if consecutive >= FAILURE_THRESHOLD and data.get("status") != "degraded":
+                    print(f"⚠ DEGRADED {env_id} — marking degraded!", flush=True)
+                    data["status"] = "degraded"
+                    tmp = state_file.with_suffix(".tmp")
+                    tmp.write_text(json.dumps(data, indent=2))
+                    tmp.rename(state_file)
 
             with open(health_log, "a") as f:
                 f.write(line + "\n")
