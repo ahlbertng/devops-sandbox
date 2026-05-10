@@ -391,12 +391,3 @@ logs/cleanup.log
 * No persistent database; state is stored as JSON files.
 * Nginx routes are path-based, not subdomain-based.
 * Prometheus and Grafana are not included.
-  EOF
-
-````
-
-Then run:
-
-```bash
-git status
-````
