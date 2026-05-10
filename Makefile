@@ -7,6 +7,13 @@ down:
 build:
 	docker build -t sandbox-demo-app:latest demo-app
 
+rebuild-api:
+	docker rm -f sandbox-api || true
+	docker-compose up -d --build api
+
+status:
+	docker ps
+
 create:
 	./platform/create_env.sh demo 1800
 
@@ -23,7 +30,12 @@ outage:
 	./platform/simulate_outage.sh --env $(ENV) --mode $(MODE)
 
 logs:
-	cat logs/env-$(ENV)/health.log
+	cat logs/$(ENV)/health.log
 
-status:
-	docker ps
+api-create:
+	curl -X POST http://localhost:8000/envs \
+	-H "Content-Type: application/json" \
+	-d '{"name":"api-env","ttl":300}'
+
+api-list:
+	curl http://localhost:8000/envs
