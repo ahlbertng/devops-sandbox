@@ -10,7 +10,7 @@ Users can create temporary app environments, route traffic through Nginx, monito
 
 ```text
                     ┌──────────────────────┐
-                    │      User / API       │
+                    │      User / API      |
                     └──────────┬───────────┘
                                │
                                ▼
