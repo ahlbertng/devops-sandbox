@@ -4,8 +4,6 @@ A lightweight self-service DevOps sandbox platform for creating short-lived isol
 
 Users can create temporary app environments, route traffic through Nginx, monitor health, simulate outages, inspect logs, and destroy environments manually or automatically after TTL expiry.
 
----
-
 ## Architecture
 
 ```text
@@ -45,8 +43,6 @@ Other background components:
 - simulate_outage.sh supports crash, pause, network, and recover modes.
 ````
 
----
-
 ## Stack
 
 * Docker
@@ -56,8 +52,6 @@ Other background components:
 * Python 3
 * FastAPI
 * Flask demo app
-
----
 
 ## Repository Structure
 
@@ -84,8 +78,6 @@ devops-sandbox/
 └── README.md
 ```
 
----
-
 ## Prerequisites
 
 Install:
@@ -96,8 +88,6 @@ Install:
 * Python 3
 
 The project runs on a single Linux VM.
-
----
 
 ## Quick Start
 
@@ -123,8 +113,6 @@ Test it:
 curl http://localhost/env-abc123/
 curl http://localhost/env-abc123/health
 ```
-
----
 
 ## API Usage
 
@@ -175,8 +163,6 @@ curl -X POST http://localhost:8000/envs/env-abc123/outage \
   -H "Content-Type: application/json" \
   -d '{"mode":"recover"}'
 ```
-
----
 
 ## Makefile Commands
 
@@ -273,8 +259,6 @@ curl http://localhost/env-abc123/health
 make destroy ENV=env-abc123
 ```
 
----
-
 ## Environment Lifecycle
 
 Each environment gets:
@@ -287,7 +271,6 @@ Each environment gets:
 * app logs in `logs/$ENV_ID/app.log`
 * archived logs after destroy
 
----
 
 ## Log Shipping Approach
 
@@ -307,7 +290,6 @@ On destroy:
 * logs are archived to `logs/archived/$ENV_ID/`
 * runtime log directory is removed
 
----
 
 ## Health Monitoring
 
@@ -332,8 +314,6 @@ After 3 consecutive failures, the monitor marks the environment status as "degra
 in its state file and prints a warning.
 
 
----
-
 ## Outage Simulation
 
 Supported modes:
@@ -356,7 +336,6 @@ make outage ENV=env-abc123 MODE=recover
 
 The script has a guard to avoid running simulations against protected containers like Nginx or daemon containers.
 
----
 
 ## Cleanup Daemon
 
@@ -385,8 +364,6 @@ Actions are logged to:
 ```text
 logs/cleanup.log
 ```
-
----
 
 ## Known Limitations
 
